@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `routes`.`Member` (
   `idMember` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(256) NOT NULL,
   `isAdmin` TINYINT UNSIGNED NOT NULL,
   `firstAid` TINYINT NULL,
   PRIMARY KEY (`idMember`),
