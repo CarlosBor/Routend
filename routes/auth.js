@@ -2,7 +2,38 @@ const express = require('express');
 const router = express.Router();
 const { Member, Route, Photo, Review } = require('../model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
+
+//Middleware:
+const isAdmin = (req, res, next) => {
+  if (!req.user || !req.user.isAdmin) {
+    return res.status(403).json({ message: 'Access denied. Admins only.' });
+  }
+  next();  // Proceed to the next middleware or route handler
+};
+
+// Middleware to authenticate token
+const authenticateToken = (req, res, next) => {
+  // Look for the token in cookies
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(403).json({ message: 'Access denied. No token provided.' });
+  }
+
+  // Verify the token
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(400).json({ message: 'Invalid token' });
+    }
+
+    // Store decoded user data (userId, isAdmin) in the request object
+    req.user = decoded;
+    next();  // Proceed to the next middleware or route handler
+  });
+};
+//Login
 router.get('/login', (req, res) => {
   res.render('login');
 });
@@ -14,27 +45,29 @@ router.post('/login', async (req, res) => {
     if (!member) {
       return res.status(401).send('Invalid username or password');
     }
-
-    // If using plain text (for now):
-    if (member.password !== password) {
-      return res.status(401).send('Invalid username or password');
+    const isMatch = await bcrypt.compare(password, member.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    // Simulate a login session (you can later replace this with real sessions or JWT)
-    res.send(`Welcome, ${member.name}!`);
+    const payload = { userId: member.idMember, isAdmin: member.isAdmin };  // Store user info in the token payload
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 3600000 }); // 1 hour
+    res.redirect('/routes'); // You can change '/home' to any route you'd like
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
   }
 });
 
-
+//Register
 router.get('/signup', (req, res) => {
     res.render('signup');
   });
   
 router.post('/signup', async (req, res) => {
-  const { name, username, password, confirmPassword } = req.body;
+  const { name, username, password, confirmPassword, firstAid } = req.body;
 
   // Validate password confirmation
   if (password !== confirmPassword) {
@@ -47,14 +80,14 @@ router.post('/signup', async (req, res) => {
     if (existingUser) {
       return res.status(400).send('Username already taken');
     }
-
+    const hashedPassword = await bcrypt.hash(password, 10);
     // Create new member
     const newMember = await Member.create({
       name,
       username,
-      password, // you should hash this password before storing it, but for now we leave it plain
+      password:hashedPassword, // you should hash this password before storing it, but for now we leave it plain
       isAdmin: 0, // set default admin status to non-admin
-      firstAid: 0, // set default first aid status to 0
+      firstAid, // set default first aid status to 0
     });
 
     res.send(`Account created for ${newMember.name}!`);
@@ -64,8 +97,8 @@ router.post('/signup', async (req, res) => {
   }
 });
   
-  // Display all routes
-router.get('/routes', async (req, res) => {
+// Display all routes
+router.get('/routes',authenticateToken, async (req, res) => {
   try {
     const routes = await Route.findAll(); // Get all routes from DB
     res.render('routes', { routes }); // Pass routes to the 'routes.pug' view
@@ -76,7 +109,18 @@ router.get('/routes', async (req, res) => {
 });
 
 // Add a new route (form view)
-router.get('/routes/new', (req, res) => {
+router.get('/routes/new', authenticateToken, isAdmin, async (req, res) => {
+  const { tripId } = req.params;
+  const { review, idAuthor } = req.body;
+
+  try {
+    await Review.create({ review, idAuthor, idTrip: tripId });
+    res.redirect(`/reviews/${tripId}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error adding review');
+  }
+
   res.render('addRoute'); // Render the 'addRoute.pug' view for adding new routes
 });
 
