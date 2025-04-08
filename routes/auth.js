@@ -5,12 +5,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 
-//Middleware:
 const isAdmin = (req, res, next) => {
   if (!req.user || !req.user.isAdmin) {
-    return res.status(403).json({ message: 'Access denied. Admins only.' });
+    return res.redirect('/unauthorized');  // Redirect to the unauthorized page
   }
-  next();  // Proceed to the next middleware or route handler
+  next();  // Proceed to the next middleware or route handler if the user is an admin
 };
 
 // Middleware to authenticate token
@@ -201,5 +200,8 @@ router.post('/reviews/:tripId', async (req, res) => {
   }
 });
 
+router.get('/unauthorized', (req, res) => {
+  res.render('unauthorized');  // This will render the 'unauthorized.pug' view
+});
 
 module.exports = router;
