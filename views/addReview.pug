@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title Add New Review
+  body
+    h1 Add New Review for Trip #{tripId}
+    form(action=`/reviews/${tripId}` method="POST")
+      label(for="review") Review:
+      textarea(name="review" required)
+      br
+      label(for="idAuthor") Author (ID):
+      input(type="number" name="idAuthor" required)
+      br
+      button(type="submit") Add Review

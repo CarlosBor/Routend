@@ -9,8 +9,8 @@ Requisitos mínimos
     Crear un sistema de roles y/o permisos.
 
 
-- Login (registro de usuarios y verificacion al entrar)
-- Endpoints para sacar rutas, fotos y reviews
+- Login (registro de usuarios y verificacion al entrar)     (DONE)
+- Endpoints para sacar rutas, fotos y reviews               
 - Escribir una review a partir del endpoint de review
 - Panel de admin
 - Vistas para que la app funcione:

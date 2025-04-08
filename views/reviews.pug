@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Reviews for Trip
+  body
+    h1 Reviews for Trip
+    ul
+      each review in reviews
+        li
+          p "#{review.review}" by Author ID #{review.idAuthor}
+    a(href="/reviews/new/#{tripId}") Add a new review
