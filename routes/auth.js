@@ -98,6 +98,11 @@ router.post('/signup', async (req, res) => {
   
 // Display all routes
 router.get('/routes',authenticateToken, async (req, res) => {
+  // Aqui habria que separar las excursiones en pasadas y futuras 
+  // para poder generar dos formularios distintos, uno de ver reviews y fotos y otro de
+  // apuntarse
+
+  //En caso admin, poder añadir/quitar
   try {
     const routes = await Route.findAll(); // Get all routes from DB
     res.render('routes', { routes }); // Pass routes to the 'routes.pug' view
