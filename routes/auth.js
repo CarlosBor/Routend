@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Member, Route, Photo, Review } = require('../model');
+const { Member, Route, Photo, Review, Trip, MemberTrip } = require('../model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -32,6 +32,7 @@ const authenticateToken = (req, res, next) => {
     next();  // Proceed to the next middleware or route handler
   });
 };
+
 //Login
 router.get('/login', (req, res) => {
   res.render('login');
@@ -50,10 +51,11 @@ router.post('/login', async (req, res) => {
     }
 
     const payload = { userId: member.idMember, isAdmin: member.isAdmin };  // Store user info in the token payload
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5h' });
+
 
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', maxAge: 3600000 }); // 1 hour
-    res.redirect('/routes'); // You can change '/home' to any route you'd like
+    res.redirect('/trips'); // You can change '/home' to any route you'd like
   } catch (err) {
     console.error(err);
     res.status(500).send('Server error');
@@ -98,10 +100,6 @@ router.post('/signup', async (req, res) => {
   
 // Display all routes
 router.get('/routes',authenticateToken, async (req, res) => {
-  // Aqui habria que separar las excursiones en pasadas y futuras 
-  // para poder generar dos formularios distintos, uno de ver reviews y fotos y otro de
-  // apuntarse
-
   //En caso admin, poder añadir/quitar
   try {
     const routes = await Route.findAll(); // Get all routes from DB
@@ -109,6 +107,53 @@ router.get('/routes',authenticateToken, async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send('Error fetching routes');
+  }
+});
+
+router.get('/trips',authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+
+  try {
+    const [routes, trips, userTrips] = await Promise.all([
+      Route.findAll(),
+      Trip.findAll(),
+      MemberTrip.findAll({ where: { Member_idMember: userId } })
+    ]);
+    const now = Date.now();
+    const attendedTripIds = new Set(  userTrips.map(entry => entry.get().Trip_idTrip));
+    //Add a piece of info listing whether the member is listed in that trip or not
+    const enhanceTrips = (tripList) => tripList.map(trip => {
+      return ({
+      ...trip.get(),
+      attended: attendedTripIds.has(trip.idTrip)
+    })});
+    //TODO add buttons for reviews/photos if they were there
+    const previousRoutes = routes.map(route => {
+      const tripsForRoute = trips.filter(trip => {
+        const tripTime = new Date(trip.Time).getTime();
+        return trip.idRoute === route.idRoute && tripTime < now;
+      });
+      return {
+        route,
+        trips: enhanceTrips(tripsForRoute)
+      };
+    });
+
+    //TODO Add button to sign up/down depending on the member being listed in there
+    const futureRoutes = routes.map(route => {
+      const tripsForRoute = trips.filter(trip => {
+        const tripTime = new Date(trip.Time).getTime();
+        return trip.idRoute === route.idRoute && tripTime > now;
+      });
+      return {
+        route,
+        trips: enhanceTrips(tripsForRoute)
+      };
+    });
+    res.render('trips', { previousRoutes, futureRoutes });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching trips');
   }
 });
 
@@ -156,7 +201,7 @@ router.get('/photos/:tripId', async (req, res) => {
 // Add a new photo (form view)
 router.get('/photos/new/:tripId', (req, res) => {
   const { tripId } = req.params;
-  res.render('addPhoto', { tripId });
+  res.render('addº1', { tripId });
 });
 
 // Handle new photo form submission
@@ -176,9 +221,19 @@ router.post('/photos/:tripId', async (req, res) => {
 // Display all reviews for a specific trip
 router.get('/reviews/:tripId', async (req, res) => {
   const { tripId } = req.params;
+  // const userName = await Member.findOne({ where: { idMember: userId } }).dataValues.username;  
   try {
     const reviews = await Review.findAll({ where: { idTrip: tripId } });
-    res.render('reviews', { reviews, tripId });
+    const namedReviews = await Promise.all(
+      reviews.map(async (review) => {
+        const member = await Member.findOne({ where: {idMember: review.idAuthor}});
+        const username = member ? member.get('username') : 'Unknown';
+        return {
+          ...review.get(),
+          username
+        };
+     }));
+    res.render('reviews', { namedReviews, tripId });
   } catch (err) {
     console.error(err);
     res.status(500).send('Error fetching reviews');
@@ -186,18 +241,19 @@ router.get('/reviews/:tripId', async (req, res) => {
 });
 
 // Add a new review (form view)
-router.get('/reviews/new/:tripId', (req, res) => {
+router.get('/reviews/new/:tripId', authenticateToken, (req, res) => {
+  const user = req.user;
   const { tripId } = req.params;
-  res.render('addReview', { tripId });
+  res.render('addReview', { tripId, user });
 });
 
 // Handle new review form submission
-router.post('/reviews/:tripId', async (req, res) => {
+router.post('/reviews/:tripId', authenticateToken, async (req, res) => {
+  const { userId } = req.user;
   const { tripId } = req.params;
-  const { review, idAuthor } = req.body;
-
+  const { review } = req.body;
   try {
-    await Review.create({ review, idAuthor, idTrip: tripId });
+    await Review.create({ review, idAuthor:userId, idTrip: tripId });
     res.redirect(`/reviews/${tripId}`); // After successful addition, redirect to reviews for the trip
   } catch (err) {
     console.error(err);

@@ -18,3 +18,5 @@ Requisitos mínimos
     Ver y apuntarse a las salidas (con vehiculo o no)
     Añadir fotos
     Añadir reviews
+
+    Separar endpoints de API y de vistas

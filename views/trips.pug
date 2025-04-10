@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    title Trips by Route
+  body
+    h1 Upcoming Routes and Their Trips
+    if futureRoutes && futureRoutes.length
+      each item in futureRoutes
+        section
+          h2= item.route.location
+          if item.trips && item.trips.length
+            ul
+              each trip in item.trips
+                li
+                  strong= trip.name
+                  |  – 
+                  span Date: #{trip.Time}
+                  | , 
+                  span Weather: #{trip.weather}
+                  |
+                  span Attended: #{trip.attended}
+          else
+            p No trips scheduled for this route.
+    else
+      p No routes found.
+
+    h1 Past Routes and Their Trips
+    if previousRoutes && previousRoutes.length
+      each item in previousRoutes
+        section
+          h2= item.route.location
+          if item.trips && item.trips.length
+            ul
+              each trip in item.trips
+                li
+                  strong= trip.name
+                  |  – 
+                  span Date: #{trip.Time}
+                  | , 
+                  span Weather: #{trip.weather}
+                  |
+                  span Attended: #{trip.attended}
+          else
+            p No trips scheduled for this route.
+    else
+      p No routes found.

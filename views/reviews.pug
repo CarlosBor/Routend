@@ -5,7 +5,7 @@ html
   body
     h1 Reviews for Trip
     ul
-      each review in reviews
+      each review in namedReviews
         li
-          p "#{review.review}" by Author ID #{review.idAuthor}
+          p "#{review.review}" by Author ID #{review.username}
     a(href="/reviews/new/#{tripId}") Add a new review
