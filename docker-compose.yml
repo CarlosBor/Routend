@@ -1,0 +1,40 @@
+# la indentacion es importante
+
+# version: '3' ya no es necesairia esta linea
+services:
+  # Servicio de la aplicación Node.js
+  app:
+    container_name: ${APP_HOST} #nombre del contenedor 1 con la aplicacion
+    build: . # lugar donde debe instalarse el contenedor, con . le decimos que lea el dockerfile de la carpeta actual
+    # puede tener mas de un dockerfile para diferentes servicios
+    restart: unless-stopped # cada vez que reiniciemos el pc, se va a poner en marcha el contenedor
+    ports: 
+      - ${APP_PORT}:3000 # mapeado de puertos, der:el del contenedor, izq: el de fuera del docker
+    volumes:
+      - .:/app # mapeado de volumenes,  la carpeta actual . mapeada a /app. Si se modifica en algun lado, se modifica en el otro. Lo detecta nodemon
+      - /app/node_modules # crea un volumen anonimo sin mapeado, si no lo hacemos entra en conflicto con el node_modules de nuestro ordenador.
+      #si queremos un volumen con nombre le anteponemos node_modules:
+    depends_on:
+      - mysql #este contenedor depende del otro, para que sepa cual debe empezar antes. PEro falla. La primera vez va a fallar. Se soluciona con un Ctrl+S y nodemon se vuelve a poner en marcha. 
+    # - mongo # Descomentar si se usa MongoDB
+  # environment:
+  #   NODE_ENV=development
+  # env_file:
+  #   .env
+
+  mysql:
+    container_name: ${DB_HOST} # nombre del contenedor 2 con la base de datos, que mapearemos fuera del contenedor para persistencia cuando se borre el contenedor
+    image: mysql:8.0
+    restart: unless-stopped
+    ports:
+      - ${DB_PORT}:3306  # Comentar en producción para mayor seguridad, porque no nos interesa que se acceda a la base de datos desde fuera.
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD} # variable obligatoria, passwd del usuario root
+      MYSQL_DATABASE: ${DB_NAME} # debe llamarse igual que la base de datos
+      MYSQL_USER: ${DB_USER} # usuario alternativo para acceder solo a la bd del proyecto
+      MYSQL_PASSWORD: 1234 # passwd del usuario
+    volumes:	
+      - mysql_data:/var/lib/mysql	# /var/lib/mysql es el volumen en el docker, mysql_data es el nombre de los datos fuera del docker
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Scripts de inicialización, ro=read only, solo puede leer la carpeta
+volumes:
+  mysql_data: # hay que definir los volumenes en el docker-compose
