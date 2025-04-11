@@ -18,6 +18,9 @@ module.exports = (sequelize) => {
     timestamps: false,
   });
 
+  // Now that the Trip model is loaded, define the association
+  const Trip = sequelize.models.Trip;
+
   // Add helper functions directly to the model (optional)
   MemberTrip.signUpToTrip = async function (memberId, tripId) {
     await this.create({
@@ -29,10 +32,6 @@ module.exports = (sequelize) => {
   };
 
   MemberTrip.withdrawFromTrip = async function (memberId, tripId) {
-    console.log("Withdraw");
-    console.log("member: ", memberId);
-    console.log("trip: ", tripId);
-
     await this.destroy({
       where: {
         Member_idMember: memberId,

@@ -90,15 +90,14 @@ CREATE TABLE IF NOT EXISTS `routes`.`Member_has_Trip` (
   CONSTRAINT `fk_Member_has_Trip_Member`
     FOREIGN KEY (`Member_idMember`)
     REFERENCES `routes`.`Member` (`idMember`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Member_has_Trip_Trip1`
     FOREIGN KEY (`Trip_idTrip`)
     REFERENCES `routes`.`Trip` (`idTrip`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `routes`.`Photos`
@@ -116,14 +115,15 @@ CREATE TABLE IF NOT EXISTS `routes`.`Photos` (
   CONSTRAINT `fk_Photos_Member1`
     FOREIGN KEY (`idAuthor`)
     REFERENCES `routes`.`Member` (`idMember`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Photos_Trip1`
     FOREIGN KEY (`idTrip`)
     REFERENCES `routes`.`Trip` (`idTrip`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE  -- Updated to CASCADE, so related photos will be deleted when a trip is deleted
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------
@@ -142,19 +142,15 @@ CREATE TABLE IF NOT EXISTS `routes`.`Reviews` (
   CONSTRAINT `fk_Photos_Member10`
     FOREIGN KEY (`idAuthor`)
     REFERENCES `routes`.`Member` (`idMember`)
-    ON DELETE NO ACTION
+    ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_Photos_Trip10`
     FOREIGN KEY (`idTrip`)
     REFERENCES `routes`.`Trip` (`idTrip`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE  -- Updated to CASCADE, so related reviews will be deleted when a trip is deleted
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 -- -----------------------------------------------------
 -- Dummy Data Inserts for `routes` Schema

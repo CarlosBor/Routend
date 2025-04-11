@@ -29,7 +29,6 @@ router.get('/photos/:tripId', async (req, res) => {
     const { tripId } = req.params;
     const { url } = req.body;
     const { userId } = req.user;
-    console.log("This is the user ID ", userId);
     try {
       await Photo.create({ url, idAuthor:userId, idTrip: tripId });
       res.redirect(`/photos/${tripId}`); // After successful addition, redirect to photos for the trip

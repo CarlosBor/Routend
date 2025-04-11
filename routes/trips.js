@@ -5,16 +5,22 @@ const isAdmin = require('../middleware/isAdmin');
 const { sequelize, Member, Route, Photo, Review, Trip, MemberTrip } = require('../model');
 const app = express();
 
-router.get('/trips',authenticateToken, async (req, res) => {
+router.get('/trips', authenticateToken, async (req, res) => {
+  try {
+    // Fetch the future and past routes
     const userId = req.user.userId;
-    try {
-        const { previousRoutes, futureRoutes } = await sequelize.models.Trip.getTripsForUser(userId);
-        res.render('trips', { previousRoutes, futureRoutes });
-      } catch (err) {
-        console.error(err);
-        res.status(500).send('Error fetching trips');
-      }
-  });
+    const { previousRoutes, futureRoutes } = await sequelize.models.Trip.getTripsForUser(userId);
+
+    // Check if the user is an admin
+    const isAdmin = req.user.isAdmin === 1;
+
+    // Render the trips view, passing futureRoutes, previousRoutes, and isAdmin
+    res.render('trips', { futureRoutes, previousRoutes, isAdmin });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error fetching trips');
+  }
+});
 
 router.get('/trips/:tripId/signup', authenticateToken, async (req, res) => {
   const { tripId } = req.params;
