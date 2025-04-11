@@ -7,6 +7,10 @@ const tripRoutes = require('./routes/trips');
 const reviewroutes = require('./routes/reviews');
 const photosroutes = require('./routes/photos');
 const adminUsersroutes = require('./routes/admin');
+const apiRouterReviews = require('./routes/api/reviews');
+const apiRouterTrips = require('./routes/api/trips');
+
+const cors = require('cors');
 
 const app = express();
 const cookieParser = require('cookie-parser');
@@ -22,6 +26,9 @@ app.use(tripRoutes);
 app.use(reviewroutes);
 app.use(photosroutes);
 app.use(adminUsersroutes);
+app.use(apiRouterReviews);
+app.use(apiRouterTrips);
+app.use(cors());
 
 app.use(express.json());
 

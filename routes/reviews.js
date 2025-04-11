@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Member, Route, Photo, Review, Trip, MemberTrip } = require('../model');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const isAdmin = require('../middleware/isAdmin');
+const { Member, Review } = require('../model');
 const authenticateToken = require('../middleware/authenticateToken');
 
 router.get('/reviews/:tripId', async (req, res) => {

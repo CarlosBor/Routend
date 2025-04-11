@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Member } = require('../model');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 router.get('/login', (req, res) => {
