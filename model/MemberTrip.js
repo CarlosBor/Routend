@@ -1,6 +1,3 @@
-// models/MemberTrip.js
-const { DataTypes } = require('sequelize');
-
 module.exports = (sequelize) => {
   const MemberTrip = sequelize.define('MemberTrip', {
     Member_idMember: {
@@ -18,10 +15,8 @@ module.exports = (sequelize) => {
     timestamps: false,
   });
 
-  // Now that the Trip model is loaded, define the association
   const Trip = sequelize.models.Trip;
 
-  // Add helper functions directly to the model (optional)
   MemberTrip.signUpToTrip = async function (memberId, tripId) {
     await this.create({
       Member_idMember: memberId,

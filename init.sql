@@ -164,7 +164,8 @@ VALUES
 ('Charlie Moon', 'charliem', 'charliepass', 0, 0),
 ('Diana Ridge', 'dianar', 'ridge456', 0, 1),
 ('Evan Brooks', 'evanb', 'evan789', 0, 0),
-('Fiona Lake', 'fional', 'lake321', 1, 1);
+('Fiona Lake', 'fional', 'lake321', 1, 1),
+('Test user', 'qwe', '$2b$10$sCHdRvaskthE3UwsHmWMsO3S0jinLmKr2aXtNjqwQUOxKti0Q2HUi', 1, 1);
 
 -- Insert Routes
 INSERT INTO `routes`.`Route` (`difficulty`, `location`, `meetingPoint`, `distance`, `elevationGain`, `durationMins`, `terrainType`)

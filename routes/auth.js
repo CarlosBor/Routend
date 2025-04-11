@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { Member, Route, Photo, Review, Trip, MemberTrip } = require('../model');
+const { Member } = require('../model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const isAdmin = require('../middleware/isAdmin');
-const authenticateToken = require('../middleware/authenticateToken');
 
 router.get('/login', (req, res) => {
   res.render('login');
@@ -45,25 +43,22 @@ router.get('/signup', (req, res) => {
 router.post('/signup', async (req, res) => {
   const { name, username, password, confirmPassword, firstAid } = req.body;
 
-  // Validate password confirmation
   if (password !== confirmPassword) {
     return res.status(400).send('Passwords do not match');
   }
 
   try {
-    // Check if username already exists
     const existingUser = await Member.findOne({ where: { username } });
     if (existingUser) {
       return res.status(400).send('Username already taken');
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Create new member
     const newMember = await Member.create({
       name,
       username,
-      password:hashedPassword, // you should hash this password before storing it, but for now we leave it plain
-      isAdmin: 0, // set default admin status to non-admin
-      firstAid, // set default first aid status to 0
+      password:hashedPassword,
+      isAdmin: 0,
+      firstAid,
     });
 
     res.send(`Account created for ${newMember.name}!`);
@@ -74,7 +69,7 @@ router.post('/signup', async (req, res) => {
 });
 
 router.get('/unauthorized', (req, res) => {
-  res.render('unauthorized');  // This will render the 'unauthorized.pug' view
+  res.render('unauthorized');
 });
 
 module.exports = router;

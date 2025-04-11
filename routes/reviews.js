@@ -6,10 +6,8 @@ const jwt = require('jsonwebtoken');
 const isAdmin = require('../middleware/isAdmin');
 const authenticateToken = require('../middleware/authenticateToken');
 
-// Display all reviews for a specific trip
 router.get('/reviews/:tripId', async (req, res) => {
     const { tripId } = req.params;
-    // const userName = await Member.findOne({ where: { idMember: userId } }).dataValues.username;  
     try {
       const reviews = await Review.findAll({ where: { idTrip: tripId } });
       const namedReviews = await Promise.all(
@@ -28,14 +26,12 @@ router.get('/reviews/:tripId', async (req, res) => {
     }
   });
   
-  // Add a new review (form view)
   router.get('/reviews/new/:tripId', authenticateToken, (req, res) => {
     const { userId } = req.user;
     const { tripId } = req.params;
     res.render('addReview', { tripId, userId });
   });
   
-  // Handle new review form submission
   router.post('/reviews/:tripId', authenticateToken, async (req, res) => {
     const { userId } = req.user;
     const { tripId } = req.params;
