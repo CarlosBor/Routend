@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
 const routeRoutes = require('./routes/routes');
 const tripRoutes = require('./routes/trips');
+const reviewroutes = require('./routes/reviews');
+const photosroutes = require('./routes/photos');
 const app = express();
 const cookieParser = require('cookie-parser');
 
@@ -15,6 +17,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(authRoutes);
 app.use(routeRoutes);
 app.use(tripRoutes);
+app.use(reviewroutes);
+app.use(photosroutes);
+
 app.use(express.json());
 
 app.listen(3000, () => {

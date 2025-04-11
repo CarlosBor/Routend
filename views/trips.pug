@@ -14,14 +14,14 @@ html
                 li
                   strong= trip.name
                   |  – 
-                  span Date: #{trip.Time}
+                  span id: #{trip.idTrip}
                   | , 
                   span Weather: #{trip.weather}
                   |
                   if trip.attended
-                    a(href='/reviews/#{route.idRoute}') Sign Out
+                    a(href='/trips/' + trip.idTrip + '/withdraw') Withdraw
                   else
-                    a(href='/reviews/#{route.idRoute}') Sign In
+                    a(href='/trips/' + trip.idTrip + '/signup') Sign Up
           else
             p No trips scheduled for this route.
     else
@@ -43,9 +43,8 @@ html
                   span Weather: #{trip.weather}
                   |
                   if trip.attended
-                    a(href='/reviews/#{route.idRoute}') Add a review
-                  else
-                    a(href='/reviews/#{route.idRoute}') Add a photo
+                    a(href='/reviews/new/' + trip.idTrip) Add a review
+                    a(href='/photos/new/' + trip.idTrip) Add a photo
           else
             p No trips scheduled for this route.
     else

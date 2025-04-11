@@ -54,7 +54,6 @@ module.exports = (sequelize) => {
         trips: enhanceTrips(tripsForRoute),
       };
     });
-
     return { previousRoutes, futureRoutes };
   };
 

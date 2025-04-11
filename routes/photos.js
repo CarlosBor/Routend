@@ -21,16 +21,17 @@ router.get('/photos/:tripId', async (req, res) => {
   // Add a new photo (form view)
   router.get('/photos/new/:tripId', (req, res) => {
     const { tripId } = req.params;
-    res.render('addº1', { tripId });
+    res.render('addPhoto', { tripId });
   });
   
   // Handle new photo form submission
-  router.post('/photos/:tripId', async (req, res) => {
+  router.post('/photos/:tripId', authenticateToken, async (req, res) => {
     const { tripId } = req.params;
-    const { url, idAuthor } = req.body;
-  
+    const { url } = req.body;
+    const { userId } = req.user;
+    console.log("This is the user ID ", userId);
     try {
-      await Photos.create({ url, idAuthor, idTrip: tripId });
+      await Photo.create({ url, idAuthor:userId, idTrip: tripId });
       res.redirect(`/photos/${tripId}`); // After successful addition, redirect to photos for the trip
     } catch (err) {
       console.error(err);

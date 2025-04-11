@@ -30,9 +30,9 @@ router.get('/reviews/:tripId', async (req, res) => {
   
   // Add a new review (form view)
   router.get('/reviews/new/:tripId', authenticateToken, (req, res) => {
-    const user = req.user;
+    const { userId } = req.user;
     const { tripId } = req.params;
-    res.render('addReview', { tripId, user });
+    res.render('addReview', { tripId, userId });
   });
   
   // Handle new review form submission
@@ -42,7 +42,7 @@ router.get('/reviews/:tripId', async (req, res) => {
     const { review } = req.body;
     try {
       await Review.create({ review, idAuthor:userId, idTrip: tripId });
-      res.redirect(`/reviews/${tripId}`); // After successful addition, redirect to reviews for the trip
+      res.redirect(`/reviews/${tripId}`);
     } catch (err) {
       console.error(err);
       res.status(500).send('Error adding review');
