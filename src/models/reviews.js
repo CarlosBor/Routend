@@ -10,7 +10,7 @@ import { DataTypes } from "sequelize";
 import connection from "../config/sequelize.js";
 
 
-const Route = connection.define("reviews",{
+const Review = connection.define("Reviews",{
     idReview: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -31,4 +31,4 @@ const Route = connection.define("reviews",{
     }
 });
 
-export default Route;
+export default Review;

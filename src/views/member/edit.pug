@@ -1,0 +1,19 @@
+extends ../layout
+block content 
+    h1 Edit Route 
+    form(action=`/route/${route.idRoute}`, method="post") 
+        label.form-label(for="name") Name 
+        input.form-input(type="text", name="name")
+
+        label.form-label(for="email") Email
+        input.form-input(type="email", name="email" )
+
+        label.form-label(for="password") Password
+        input.form-input(type="password", name="password" )
+        
+        label.form-label(for="firstAid") first aid knowloedge
+        select.form-input(name="firstAid" ) 
+            option(value=0 selected) No 
+            option(value=1) Yes
+
+        button Submit

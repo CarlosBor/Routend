@@ -35,6 +35,6 @@ services:
       MYSQL_PASSWORD: 1234 # passwd del usuario
     volumes:	
       - mysql_data:/var/lib/mysql	# /var/lib/mysql es el volumen en el docker, mysql_data es el nombre de los datos fuera del docker
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Scripts de inicialización, ro=read only, solo puede leer la carpeta
+      - ./database:/docker-entrypoint-initdb.d:ro # ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Scripts de inicialización, ro=read only, solo puede leer la carpeta
 volumes:
   mysql_data: # hay que definir los volumenes en el docker-compose

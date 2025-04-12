@@ -1,0 +1,27 @@
+extends ../layout
+block content 
+    h1 Edit Route 
+    form(action=`/route/${route.idRoute}`, method="post") 
+        label.form-label(for="name") Location 
+        input.form-input(type="text", name="location" value=route.location)
+
+        label.form-label(for="elevationGain") Elevation Gain 
+        input.form-input(type="text", name="elevationGain" value=route.elevationGain)
+
+        label.form-label(for="durationMins") Duration 
+        input.form-input(type="text", name="durationMins" value=route.durationMins)
+
+        label.form-label(for="distance") Distance 
+        input.form-input(id="distance" type="text" name="distance" value=route.distance)
+        
+        //-input(id="name", type="text", name="name")
+        label.form-label(for="difficulty") Difficulty
+        select.form-input(name="difficulty" ) 
+            each difficulty in difficulties
+                option(value=difficulty selected=route.difficulty===difficulty) #{difficulty.charAt(0).toUpperCase() + difficulty.slice(1)} 
+
+        label.form-label(for="terrainType") Terrain Type 
+        select.form-input(name="terrainType") 
+            each terrain in terrains 
+                option(value=terrain selected=(route.terrainType===terrain)) #{terrain.charAt(0).toUpperCase() + terrain.slice(1)}
+        button Submit

@@ -3,8 +3,8 @@ Table: Member
 Columns:
 idMember int AI PK 
 name varchar(45) 
-username varchar(45) 
-password varchar(45) 
+email varchar(45) 
+password varchar(256) 
 isAdmin tinyint UN 
 firstAid tinyint UN
 
@@ -13,9 +13,10 @@ FK:-
 
 import { DataTypes } from "sequelize";
 import connection from "../config/sequelize.js";
-//import Sale from "./sale.js";
+import Photos from "./photos.js";
+import Reviews from "./reviews.js";
 
-const Member = connection.define("member",{
+const Member = connection.define("Member",{
     idMember: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -26,12 +27,13 @@ const Member = connection.define("member",{
         type: DataTypes.STRING(45),
         allowNull: false,
     },
-    username: {
+    email: {
         type: DataTypes.STRING(45),
-        allowNull: true,
+        allowNull: false,
     },
     password: {
-        type: DataTypes.STRING(45),
+        type: DataTypes.STRING(256),
+        allownull: false,
     },
     isAdmin: {
         type: DataTypes.TINYINT.UNSIGNED,
@@ -45,6 +47,9 @@ const Member = connection.define("member",{
     
 })
 
-// Product.belongsToMany(Sale,{through:"sale_has_product",foreignKey:"product_id"});
-// Sale.belongsToMany(Product,{through:"sale_has_product",foreignKey:"sale_id"});
+Member.hasMany(Photos,{foreignKey:"idAuthor", onDelete:"CASCADE"}); // Si se borra un miembro se borran todas sus fotos
+Member.hasMany(Reviews,{foreignKey:"idAuthor", onDelete:"SET NULL"}); // Si se borra un miembro se guardan sus reseñas pero ya no se le identifica
+Photos.belongsTo(Member,{foreignKey:"idAuthor"});
+Reviews.belongsTo(Member,{foreignKey:"idAuthor",targetKey:"idMember"});
+
 export default Member;

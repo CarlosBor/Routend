@@ -9,7 +9,7 @@ idTrip int */
 import { DataTypes } from "sequelize";
 import connection from "../config/sequelize.js";
 
-const Photos = connection.define("photos",{
+const Photos = connection.define("Photos",{
     idPhotos: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,

@@ -1,18 +1,18 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import session from 'express-session';
 import router from './routes/router.js';
-//import cors from 'cors';
+import cors from 'cors';
+import session from 'express-session';
 
 // Cargar variables de entorno
 dotenv.config();
 
 // Crear servidor Express
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.APP_PORT || 3000;
 
 // Configurar middleware
-//app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('src/public'));

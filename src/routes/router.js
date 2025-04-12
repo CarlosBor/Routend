@@ -1,16 +1,32 @@
 import { Router } from "express";
-import { Sequelize } from "sequelize";
-// import standRouter from "./standRouter.js";
- import funcionLaQueSea from "./routerLoQueSea.js";
-// import authRouter from "./authRouter.js";
+import routeRouter from "./routeRouter.js";
+import memberRouter from "./memberRouter.js";
+import authRouter from "./authRouter.js";
+
 
 const router = Router();
 
-router.get("/",(req,res)=>{
-    res.send("hello world");
-})
-router.use("/test",funcionLaQueSea);
-// router.use("/product",productRouter);
-// router.use("/",authRouter);
+// router.get("/",(req,res)=>{
+//     res.send("hello world");
+//     console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`);
+// });
 
-export default router
+router.get("/", (req, res) => {
+    // const isLoggedIn = !!req.session.user;
+    const message = req.query.message || null;
+
+    res.render("home", {
+        // isLoggedIn,
+        // user: req.session.user,
+        message 
+    });
+});
+
+router.use("/route", routeRouter);
+router.use("/member", memberRouter);
+router.use("/auth", authRouter);
+
+
+
+export default router;
+

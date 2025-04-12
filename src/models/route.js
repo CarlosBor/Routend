@@ -15,7 +15,10 @@ import { DataTypes } from "sequelize";
 import connection from "../config/sequelize.js";
 import Trip from "./trip.js";
 
-const Route = connection.define("route",{
+const   difficulties=["Easy", "Medium", "Hard"], 
+        terrains= ["Rocky", "Sand", "Forest", "Trail", "Snow"];
+
+const Route = connection.define("Route", {
     idRoute: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -23,14 +26,10 @@ const Route = connection.define("route",{
         autoIncrement: true
     },
     difficulty: {
-        type: DataTypes.ENUM("Easy", "Medium", "Hard"),
+        type: DataTypes.ENUM(difficulties),
         allowNull: false,
     },
     location: {
-        type: DataTypes.STRING(45),
-        allowNull: false,
-    },
-    meetingPoint: {
         type: DataTypes.STRING(45),
         allowNull: false,
     },
@@ -38,23 +37,25 @@ const Route = connection.define("route",{
         type: DataTypes.STRING(45),
         allowNull: false,
     },
-    elevationGain: { 
+    elevationGain: {
         type: DataTypes.STRING(45),
         allowNull: false,
     },
     durationMins: {
-        type: DataTypes.INTEGER.UNSIGNED,
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     terrainType: {
-        type: DataTypes.ENUM("Rocky", "Sand", "Forest", "Trail", "Snow"),
+        type: DataTypes.ENUM(terrains),
         allowNull: false,
     }
 });
 
 // Una ruta se puede realizar muchas veces, un viaje solo tiene una ruta
 // Si se borra una ruta, no se borran los viajes que se hicieron con ella
-Route.hasMany(Trip,{foreignKey:"idRoute"});
-Trip.belongsTo(Route,{foreignKey:"idRoute"});
+// solo se pone a NULL el idRoute correspondiente a esa ruta en Trips
+Route.hasMany(Trip, { foreignKey: "idRoute", onDelete: "SET NULL" });
+Trip.belongsTo(Route, { foreignKey: "idRoute" });
 
 export default Route;
+export { difficulties, terrains };

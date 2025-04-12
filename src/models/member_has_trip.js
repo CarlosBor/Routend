@@ -9,8 +9,10 @@ freeSeats int UN */
 
 import { DataTypes } from "sequelize";        
 import connection from "../config/sequelize.js";
+import Trip from "./trip.js";
+import Member from "./member.js";
 
-const Member_has_Trip = connection.define("member_has_trip",{
+const Member_has_Trip = connection.define("Member_has_Trip",{
     Member_idMember: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: false,
@@ -31,3 +33,8 @@ const Member_has_Trip = connection.define("member_has_trip",{
         defaultValue: 0
     }
 })
+
+Trip.belongsToMany(Member,{through:"Member_has_Trip", foreignKey: "Trip_idTrip"});
+Member.belongsToMany(Trip,{through:"Member_has_Trip", foreignKey: "Member_idMember"});
+
+export default Member_has_Trip;
