@@ -20,9 +20,10 @@ article
     p.card_data 
         | Terrain type: 
         span.card_value= route.terrainType
-    a(href=`/route/${route.idRoute}/edit`)
-        button Edit
-    form(action=`/route/${route.idRoute}/delete`, method="post") 
-        button Delete
+    if isLoggedIn && isAdmin
+        a(href=`/route/${route.idRoute}/edit`)
+            button Edit
+        form(action=`/route/${route.idRoute}/delete`, method="post") 
+            button Delete
 
     

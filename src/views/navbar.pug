@@ -1,4 +1,5 @@
 header
+    p DEBUG: isLoggedIn=#{isLoggedIn}, Name=#{name}, isAdmin=#{isAdmin}
     nav
         ul 
             li 
@@ -11,7 +12,14 @@ header
                 a(href="/photos") Photos
             li 
                 a(href="/reviews") Reviews
-            li 
-                a(href="/auth/register") Be a member
-            li
-                a(href="/auth/login") Sing in
+            if !isLoggedIn
+                li 
+                    a(href="/auth/register") Be a member
+                li
+                    a(href="/auth/login") Sing in
+            else
+                li
+                    span #{name} 
+                    span #{isAdmin}
+                li 
+                    a(href="/auth/logout") Logout

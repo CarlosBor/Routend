@@ -3,12 +3,13 @@ html
     title Routend
     block styles
   body
+    p DEBUG: isLoggedIn=#{isLoggedIn}, Name=#{name}, isAdmin=#{isAdmin}
     include navbar.pug
 
     if error 
-        p.error= error
+      p.error= error
     if message
-        p.message= message
+      p.message= message
     block content
     #footer
-        p (c) Routend Group Ltd. 2025
+      p (c) Routend Group Ltd. 2025

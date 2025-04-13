@@ -2,8 +2,9 @@ extends ../layout
 
 block content 
     h1 Routes 
-    a(href="/route/create")
-        button Create New Route
+    if isLoggedIn && isAdmin
+        a(href="/route/create")
+            button Create New Route
     section(class="route-list")
         if routes
             each route in routes 

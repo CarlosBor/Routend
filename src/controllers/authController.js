@@ -1,19 +1,16 @@
 import memberModel from "../models/member.js";
-import {hash,compare} from "../utils/bcryptjs.js";
+import { hash, compare } from "../utils/bcryptjs.js";
 
-// function loginForm(req,res){
-//     const {error,message} = req.query;
-//     res.render("auth/login",{error,message});
-// }
-function registerForm(req,res){
-    const {error,message} = req.query;
-    res.render("auth/register",{error,message});
+
+function registerForm(req, res) {
+    const { error, message } = req.query;
+    res.render("auth/register", { error, message });
 }
 
-async function register(req,res){
-    const {name,email,password,firstAid} = req.body;
+async function register(req, res) {
+    const { name, email, password, firstAid } = req.body;
     const oldMember = await memberModel.findOne({
-        where:{
+        where: {
             email: email
         }
     })
@@ -21,42 +18,51 @@ async function register(req,res){
         return res.redirect(`/auth/register?error=a+member+with+that+email+already+exists`);
     }
     const hashedPassword = await hash(password);
-    const result = await memberModel.create({name,email,password:hashedPassword,isAdmin:false,firstAid});
+    const result = await memberModel.create({ name, email, password: hashedPassword, isAdmin: false, firstAid });
     res.redirect('/auth/register?message=Registered+successfully');
 }
-// async function login(req,res){
-//     const {email,password} = req.body;
-//     const member = await memberModel.findOne({
-//         where:{
-//             email: email
-//         }
-//     })
-//     if(!member){
-//         return res.redirect("/login?error=invalid+credentials");
-//     }
-//     const result = await compare(password,member.password);
-//     if(result){ // si la contraseña es correcta
-        
-//         const member = await memberModel.findByPk(member.idMember);
-//         req.session.member = {
-//             idMember:member.idMember,
-//             isAdmin:member.isAdmin
-//         }
-//         return res.redirect("/?message=You+are+logged+in");
-//     }else{
-//         return res.redirect("/login?error=invalid+credentials");
-//     }
 
-// }
+function loginForm(req, res) {
+    console.log("en loginForm req.query: ", req.query);
+    const { error, message } = req.query;
+    res.render("auth/login", { error, message });
+}
 
-// function logout(req,res){
-//     req.session.member = undefined;
-//     res.redirect("/");
-// }
+async function login(req, res) {
+    console.log("en login req.body: ", req.body);
+    const { email, password } = req.body;
+    const member = await memberModel.findOne({
+        where: {
+            email: email
+        }
+    })
+    if (!member) {
+        return res.redirect("/auth/login?error=invalid+credentials1");
+    }
+    console.log("member encontrado: ", member);
+    const result = password === member.password;//await compare(password,member.password);
+    if (result) { // si la contraseña es correcta
+        req.session.member = {
+            idMember: member.idMember,
+            isAdmin: member.isAdmin,
+            name: member.name,
+        }
+        return res.redirect("/");
+    } else {
+        return res.redirect("/auth/login?error=invalid+credentials2");
+    }
+
+}
+
+function logout(req, res) {
+    req.session.member = undefined;
+    res.redirect("/");
+}
+
 export default {
-    // loginForm,
+    loginForm,
     registerForm,
     register,
-    // login,
-    // logout
+    login,
+    logout
 }

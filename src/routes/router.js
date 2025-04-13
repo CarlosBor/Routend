@@ -12,12 +12,12 @@ const router = Router();
 // });
 
 router.get("/", (req, res) => {
-    // const isLoggedIn = !!req.session.user;
+    // const isLoggedIn = !!req.session.member;
     const message = req.query.message || null;
 
     res.render("home", {
         // isLoggedIn,
-        // user: req.session.user,
+        // member: req.session.member,
         message 
     });
 });

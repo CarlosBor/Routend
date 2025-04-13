@@ -32,6 +32,19 @@ app.use(session({
     }
 }));
 
+app.use((req, res, next) => {
+    console.log("MIDDLEWARE >> req.session.member:", req.session.member);
+    const member = req.session.member;
+    console.log("MIDDLEWARE >> member:", !!member);
+
+    res.locals.isLoggedIn = !!member;
+    console.log("MIDDLEWARE >> res.locals.isLoggedIn:", res.locals.isLoggedIn);
+    res.locals.name = member?.name || null;
+    res.locals.isAdmin = member?.isAdmin || false;
+
+    next();
+});
+
 // Configurar rutas
 app.use('/', router);
 app.get('/test', (req, res) => {
