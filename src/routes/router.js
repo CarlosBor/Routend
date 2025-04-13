@@ -6,19 +6,13 @@ import authRouter from "./authRouter.js";
 
 const router = Router();
 
-// router.get("/",(req,res)=>{
-//     res.send("hello world");
-//     console.log(`🚀 Servidor corriendo en: http://localhost:${PORT}`);
-// });
-
 router.get("/", (req, res) => {
-    // const isLoggedIn = !!req.session.member;
     const message = req.query.message || null;
-
+    const error = req.query.error || null;
+    console.log("message: ", message);
+    console.log("error: ", error);
     res.render("home", {
-        // isLoggedIn,
-        // member: req.session.member,
-        message 
+        message, error 
     });
 });
 

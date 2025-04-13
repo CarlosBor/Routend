@@ -3,12 +3,12 @@ import authController from "../controllers/authController.js";
 import { isAdmin, isLoggedIn, isNotLoggedIn } from "../middlewares/authMiddleware.js";
 const router = Router();
 
-router.get("/login",authController.loginForm)
-router.get("/register",authController.registerForm);
+router.get("/login", isNotLoggedIn, authController.loginForm)
+router.get("/register", authController.registerForm);
 
 router.post("/register", authController.register);
-router.post("/login",authController.login);
+router.post("/login", isNotLoggedIn, authController.login);
 
-router.get("/logout",authController.logout);
+router.get("/logout", isLoggedIn, authController.logout);
 
 export default router;

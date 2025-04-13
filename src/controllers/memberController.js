@@ -1,7 +1,8 @@
 import memberModel from "../models/member.js";
+import { hash, compare } from "../utils/bcryptjs.js";
 
 async function getAll(req, res) {
-    console.log("en getAll req.body: ", req.body);
+    console.log("memberController:getAll req.body: ", req.body);
     console.log("req.session: ", req.session);
     if (!req.session) {
         console.error("Not logged in");
@@ -18,7 +19,7 @@ async function getAll(req, res) {
 }
 
 async function getByID(req, res) {
-    console.log("en getByID req.body: ", req.body);
+    console.log("memberController:getByID req.body: ", req.body);
     const id = req.params.id;
     const member = await memberModel.findByPk(id);
     res.render("member/show", { member }); // la ruta de render es a partir de la carpeta views, no la del memberr
@@ -46,7 +47,7 @@ async function getByID(req, res) {
 //     res.redirect("/member");
 // }
 async function editForm(req, res) {
-    console.log("en editForm req.params: ", req.params);
+    console.log("memberController:editForm req.params: ", req.params);
     const id = req.params.id;
     const member = await memberModel.findByPk(id);
     if (!member) {
@@ -56,15 +57,16 @@ async function editForm(req, res) {
     res.render("member/edit", { member });
 }
 async function edit(req, res) {
-    console.log("en edit req.body: ", req.body);
+    console.log("memberController:edit req.body: ", req.body);
+    console.log("req.body: ", req.body);
     const id = req.params.id;
-    const { name, email, password, isAdmin, firstAid } = req.body; // los datos para modificar el member
+    const { name, email, password, firstAid } = req.body; // los datos para modificar el member
 
     const member = await memberModel.findByPk(id);
     member.name = name;
     member.email = email;
-    member.password = password;
-    member.isAdmin = isAdmin;
+    member.password = await hash(password);
+    console.log("req.session.member: ", req.session.member);
     member.firstAid = firstAid;
     try {
         await member.save();
@@ -77,23 +79,24 @@ async function edit(req, res) {
 }
 
 async function remove(req, res) {
-    console.log("en remove req.params: ", req.params);
+    console.log("memberController:remove req.params: ", req.params);
     const id = req.params.id;
     const member = await memberModel.findByPk(id);
     try {
         if (member) {
             if (member.isAdmin) {
-                console.log("No se puede eliminar al administrador");
+                console.log("Administrator user cannot be deleted");
+                return res.redirect("/member?error=Administrator+user+cannot+be+deleted");
             } else {
                 await member.destroy();
             }
         } else {
-            console.log("No se pudo encontrar el usuario");
-            res.redirect("/member");
+            console.log("User id " + id + " not found");
+            return res.redirect("/member?error=User+id+" + id + "+not+found");
         }
     } catch (error) {
-        console.error("Error al eliminar el usuario:", error);
-        res.status(500).send("Error al eliminar el usuario");
+        console.error("Error in user deletion:", error);
+        return res.status(500).send("Error in user deletion");
     }
     res.redirect("/member");
 }

@@ -3,11 +3,13 @@ import { hash, compare } from "../utils/bcryptjs.js";
 
 
 function registerForm(req, res) {
+    console.log("authController:registerForm req.query: ", req.query);
     const { error, message } = req.query;
     res.render("auth/register", { error, message });
 }
 
 async function register(req, res) {
+    console.log("authController:register req.body: ", req.body);
     const { name, email, password, firstAid } = req.body;
     const oldMember = await memberModel.findOne({
         where: {
@@ -23,13 +25,13 @@ async function register(req, res) {
 }
 
 function loginForm(req, res) {
-    console.log("en loginForm req.query: ", req.query);
+    console.log("authController:loginForm req.query: ", req.query);
     const { error, message } = req.query;
     res.render("auth/login", { error, message });
 }
 
 async function login(req, res) {
-    console.log("en login req.body: ", req.body);
+    console.log("authController:login req.body: ", req.body);
     const { email, password } = req.body;
     const member = await memberModel.findOne({
         where: {
@@ -40,7 +42,9 @@ async function login(req, res) {
         return res.redirect("/auth/login?error=invalid+credentials1");
     }
     console.log("member encontrado: ", member);
-    const result = password === member.password;//await compare(password,member.password);
+    console.log("password: ", password);
+    const result = await compare(password,member.password);
+    console.log("result: ", result);
     if (result) { // si la contraseña es correcta
         req.session.member = {
             idMember: member.idMember,
@@ -55,6 +59,7 @@ async function login(req, res) {
 }
 
 function logout(req, res) {
+    console.log("authController:logout");
     req.session.member = undefined;
     res.redirect("/");
 }

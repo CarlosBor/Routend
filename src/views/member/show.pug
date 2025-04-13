@@ -1,7 +1,7 @@
 extends ../layout
 
 block content 
-    if route 
-        include routeCard
+    if member 
+        include memberCard
     else 
-        p.error There is no route for that id
+        p.error There is no member for that id
