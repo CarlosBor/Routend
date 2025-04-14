@@ -3,11 +3,10 @@ html
   head
     title Routes
   body
+    include navbar.pug
     h1 Routes
     ul
       each route in routes
         li
-          p Name: #{route.location}
-          p Difficulty: #{route.difficulty}
-          p Duration: #{route.durationMins} minutes
+          include routeCard
     a(href="/routes/new") Add a new route

@@ -1,0 +1,14 @@
+html
+  head
+    title Routend
+    block styles
+  body
+    include navbar.pug
+
+    if error 
+      p.error= error
+    if message
+      p.message= message
+    block content
+    #footer
+      p (c) Routend Group Ltd. 2025

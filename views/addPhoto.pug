@@ -3,6 +3,7 @@ html
   head
     title Add New Photo
   body
+    include navbar.pug
     h1 Add New Photo
     form(action=`/photos/${tripId}` method="POST")
       label(for="url") Photo URL:

@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize';
 
-module.exports = (sequelize) =>
+const Photo = (sequelize) =>
   sequelize.define('Photo', {
     idPhotos: {
       type: DataTypes.INTEGER,
@@ -14,3 +14,5 @@ module.exports = (sequelize) =>
     tableName: 'Photos',
     timestamps: false,
   });
+
+export default Photo;

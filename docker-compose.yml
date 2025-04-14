@@ -1,6 +1,4 @@
 # la indentacion es importante
-version: "3.9"
-# version: '3' ya no es necesairia esta linea
 services:
   # Servicio de la aplicación Node.js
   app:

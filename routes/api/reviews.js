@@ -1,7 +1,8 @@
-const authenticateToken = require('../../middleware/authenticateToken');
-const express = require('express');
+import authenticateToken from '../../middleware/authenticateToken.js';
+import Review from '../../model/Review.js';
+import express from 'express';
+
 const router = express.Router();
-const { Review } = require('../../model');
 
 router.post('/reviews', authenticateToken, async (req, res) => {
   const { userId } = req.user;
@@ -19,4 +20,4 @@ router.post('/reviews', authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

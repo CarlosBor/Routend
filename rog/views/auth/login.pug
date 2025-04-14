@@ -1,0 +1,13 @@
+extends ../layout
+
+block content 
+    form(action="/auth/login", method="post") 
+        
+        label.form-label(for="email") Email
+        input.form-input(type="text" name="email" id="email")
+        
+        label(for="password") Password
+        input.form-input(type="password" name="password" id="password")
+        
+        button Sign in
+

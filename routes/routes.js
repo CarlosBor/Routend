@@ -1,43 +1,35 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authenticateToken = require('../middleware/authenticateToken');
-const isAdmin = require('../middleware/isAdmin');
-const { Route, Review } = require('../model');
-
+import authenticateToken from '../middleware/authenticateToken.js';
+import isAdmin from '../middleware/isAdmin.js';
+import Route from '../model/Route.js';
+import { addRoute, displayRoutes, addRouteForm, editRoute, editRouteForm, removeRoute } from '../controllers/routeController.js';
 router.get('/routes',authenticateToken, async (req, res) => {
-    try {
-      const routes = await Route.findAll();
-      res.render('routes', { routes });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error fetching routes');
-    }
+  displayRoutes(req,res);
   });
   
-router.get('/routes/new', authenticateToken, isAdmin, async (req, res) => {
-    const { tripId } = req.params;
-    const { review, idAuthor } = req.body;
-  
-    try {
-      await Review.create({ review, idAuthor, idTrip: tripId });
-      res.redirect(`/reviews/${tripId}`);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error adding review');
-    }
-  
-    res.render('addRoute');
+  router.get('/routes/new', authenticateToken, isAdmin, async (req, res) => {
+    addRouteForm(req, res);
+  });
+
+router.post('/routeAdd', async (req, res) => {
+  addRoute(req, res);
   });
 
 router.post('/routes', async (req, res) => {
-    const { difficulty, location, meetingPoint, distance, elevationGain, durationMins, terrainType } = req.body;
-    try {
-      await Route.create({ difficulty, location, meetingPoint, distance, elevationGain, durationMins, terrainType });
-      res.redirect('/routes');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error creating route');
-    }
+  addRoute(req, res);  
+});
+
+router.get('/routes/edit/:idRoute',authenticateToken, isAdmin, async (req, res) => {
+  editRouteForm(req,res);
   });
 
-  module.exports = router;
+router.post('/routes/edit/:idRoute',authenticateToken, isAdmin, async (req, res) => {
+  editRoute(req,res);
+});
+
+router.post('/routes/delete/:idRoute',authenticateToken, isAdmin, async (req, res) => {
+  removeRoute(req,res);
+});
+
+export default router;
