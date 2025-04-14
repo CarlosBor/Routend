@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Photos for Trip
+  body
+    h1 Photos for Trip
+    ul
+      each photo in photos
+        li
+          img(src=photo.url, alt="Photo for trip")
+    a(href="/trips") Return to trips

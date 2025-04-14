@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+    title Routes
+  body
+    h1 Routes
+    ul
+      each route in routes
+        li
+          p Name: #{route.location}
+          p Difficulty: #{route.difficulty}
+          p Duration: #{route.durationMins} minutes
+    a(href="/routes/new") Add a new route

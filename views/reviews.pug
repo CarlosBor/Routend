@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    title Reviews for Trip
+  body
+    h1 Reviews for Trip
+    ul
+      each review in namedReviews
+        li
+          p "#{review.review}" by Author ID #{review.username}
+    a(href="/trips") Return to trips

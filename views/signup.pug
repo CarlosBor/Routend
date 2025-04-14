@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title Sign Up
+  body
+    h1 Sign Up
+    form(action="/signup" method="POST")
+      label(for="name") Full Name:
+      input(type="text" name="name" required)
+      br
+      label(for="username") Username:
+      input(type="text" name="username" required)
+      br
+      label(for="password") Password:
+      input(type="password" name="password" required)
+      br
+      label(for="confirmPassword") Confirm Password:
+      input(type="password" name="confirmPassword" required)
+      br
+      label(for="firstAid") First Aid Certification:
+      input(type="checkbox" name="firstAid" value="1")
+      br
+      button(type="submit") Sign Up
