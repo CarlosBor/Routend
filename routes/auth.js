@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { Member } = require('../model');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+import { Member } from '../model/index.js';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
 router.get('/login', (req, res) => {
   res.render('login');
@@ -72,4 +72,4 @@ router.get('/unauthorized', (req, res) => {
   res.render('unauthorized');
 });
 
-module.exports = router;
+export default router;

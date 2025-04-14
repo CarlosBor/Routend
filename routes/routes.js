@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authenticateToken = require('../middleware/authenticateToken');
-const isAdmin = require('../middleware/isAdmin');
-const { Route, Review } = require('../model');
+import authenticateToken from '../middleware/authenticateToken.js';
+import isAdmin from '../middleware/isAdmin.js';
+import { Route, Review } from '../model/index.js';
 
 router.get('/routes',authenticateToken, async (req, res) => {
     try {
@@ -40,4 +40,4 @@ router.post('/routes', async (req, res) => {
     }
   });
 
-  module.exports = router;
+export default router;

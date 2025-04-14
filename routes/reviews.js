@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const { Member, Review } = require('../model');
-const authenticateToken = require('../middleware/authenticateToken');
+import { Member, Review } from '../model/index.js';
+import authenticateToken from '../middleware/authenticateToken.js';
 
 router.get('/reviews/:tripId', async (req, res) => {
     const { tripId } = req.params;
@@ -42,4 +42,4 @@ router.get('/reviews/:tripId', async (req, res) => {
     }
   });
 
-module.exports = router;
+  export default router;

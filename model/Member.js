@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize';
 
-module.exports = (sequelize) =>
+const Member = (sequelize) =>
   sequelize.define('Member', {
     idMember: {
       type: DataTypes.INTEGER,
@@ -16,3 +16,5 @@ module.exports = (sequelize) =>
     tableName: 'Member',
     timestamps: false,
   });
+
+export default Member;

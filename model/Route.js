@@ -1,6 +1,6 @@
-const { DataTypes } = require('sequelize');
+import { DataTypes } from 'sequelize';
 
-module.exports = (sequelize) =>
+const Route = (sequelize) =>
   sequelize.define('Route', {
     idRoute: {
       type: DataTypes.INTEGER,
@@ -24,3 +24,5 @@ module.exports = (sequelize) =>
     tableName: 'Route',
     timestamps: false,
   });
+
+  export default Route;

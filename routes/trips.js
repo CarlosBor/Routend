@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const authenticateToken = require('../middleware/authenticateToken');
-const { sequelize, MemberTrip } = require('../model');
+import authenticateToken from '../middleware/authenticateToken.js';
+import { sequelize, MemberTrip } from '../model/index.js';
 const app = express();
 
 router.get('/trips', authenticateToken, async (req, res) => {
@@ -37,4 +37,4 @@ router.get('/trips/:tripId/withdraw', authenticateToken, async (req, res) => {
 });
 
 
-  module.exports = router;
+export default router;

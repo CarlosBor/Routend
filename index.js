@@ -1,19 +1,22 @@
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const authRoutes = require('./routes/auth');
-const routeRoutes = require('./routes/routes');
-const tripRoutes = require('./routes/trips');
-const reviewroutes = require('./routes/reviews');
-const photosroutes = require('./routes/photos');
-const adminUsersroutes = require('./routes/admin');
-const apiRouterReviews = require('./routes/api/reviews');
-const apiRouterTrips = require('./routes/api/trips');
+import express from 'express';
+import path from 'path';
+import bodyParser from 'body-parser';
+import authRoutes from './routes/auth.js';
+import routeRoutes from './routes/routes.js';
+import tripRoutes from './routes/trips.js';
+import reviewroutes from './routes/reviews.js';
+import photosroutes from './routes/photos.js';
+import adminUsersroutes from './routes/admin.js';
+import apiRouterReviews from './routes/api/reviews.js';
+import apiRouterTrips from './routes/api/trips.js';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { fileURLToPath } from 'url';
 
-const cors = require('cors');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const cookieParser = require('cookie-parser');
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));

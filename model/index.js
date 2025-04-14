@@ -1,5 +1,7 @@
-const { Sequelize } = require('sequelize');
-require('dotenv').config();
+import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,
@@ -12,12 +14,20 @@ const sequelize = new Sequelize(
   }
 );
 
-const Member = require('./Member')(sequelize);
-const Route = require('./Route')(sequelize);
-const Photo = require('./Photo')(sequelize);
-const Review = require('./Review')(sequelize);
-const Trip = require('./Trip')(sequelize);
-const MemberTrip = require('./MemberTrip')(sequelize);
+import defineMember from './Member.js';
+import defineRoute from './Route.js';
+import definePhoto from './Photo.js';
+import defineReview from './Review.js';
+import defineTrip from './Trip.js';
+import defineMemberTrip from './MemberTrip.js';
+
+
+const Member = defineMember(sequelize);
+const Route = defineRoute(sequelize);
+const Photo = definePhoto(sequelize);
+const Review = defineReview(sequelize);
+const Trip = defineTrip(sequelize);
+const MemberTrip = defineMemberTrip(sequelize);
 
 Member.belongsToMany(Trip, { through: MemberTrip, foreignKey: 'Member_idMember' });
 Trip.belongsToMany(Member, { through: MemberTrip, foreignKey: 'Trip_idTrip' });
@@ -30,8 +40,8 @@ Photo.belongsTo(Trip, { foreignKey: 'idTrip' });
 Review.belongsTo(Member, { foreignKey: 'idAuthor' });
 Review.belongsTo(Trip, { foreignKey: 'idTrip' });
 
-MemberTrip.belongsTo(Trip, { foreignKey: 'Trip_idTrip', onDelete: 'CASCADE'});
-Photo.belongsTo(Trip, { foreignKey: 'idTrip', onDelete: 'CASCADE'});
+MemberTrip.belongsTo(Trip, { foreignKey: 'Trip_idTrip', onDelete: 'CASCADE' });
+Photo.belongsTo(Trip, { foreignKey: 'idTrip', onDelete: 'CASCADE' });
 
 Review.belongsTo(Trip, {
   foreignKey: 'idTrip',
@@ -51,12 +61,4 @@ Trip.hasMany(Review, {
   onDelete: 'CASCADE', // Ensures related Reviews are deleted when the Trip is deleted
 });
 
-module.exports = {
-  sequelize,
-  Member,
-  Route,
-  Trip,
-  MemberTrip,
-  Photo,
-  Review
-};
+export { sequelize, Member, Route, Trip, MemberTrip, Photo, Review };

@@ -1,0 +1,26 @@
+extends ../layout
+block content 
+    h1 New Route 
+    form(action="/route", method="post") 
+        label.form-label(for="name") Location 
+        input.form-input(type="text", name="location")
+
+        label.form-label(for="elevationGain") Elevation Gain (mts)
+        input.form-input(type="text", name="elevationGain" )
+
+        label.form-label(for="durationMins") Duration (min)
+        input.form-input(type="text", name="durationMins" )
+
+        label.form-label(for="distance") Distance (Kms)
+        input.form-input(id="distance" type="text" name="distance" )
+        
+        label.form-label(for="difficulty") Difficulty
+        select.form-input(name="difficulty" ) 
+            each difficulty in difficulties
+                option(value=difficulty selected=difficulty==="easy") #{difficulty} 
+
+        label.form-label(for="terrainType") Terrain Type 
+        select.form-input(name="terrainType") 
+            each terrain in terrains 
+                option(value=terrain selected=(terrain==="Forest")) #{terrain}
+        button Submit

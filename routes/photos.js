@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express'
 const router = express.Router();
-const { Photo } = require('../model');
-const authenticateToken = require('../middleware/authenticateToken');
+import { Photo } from '../model/index.js';
+import authenticateToken from '../middleware/authenticateToken.js';
 
 router.get('/photos/:tripId', async (req, res) => {
     const { tripId } = req.params;
@@ -32,4 +32,4 @@ router.get('/photos/:tripId', async (req, res) => {
     }
   });
 
-module.exports = router;
+export default router;
