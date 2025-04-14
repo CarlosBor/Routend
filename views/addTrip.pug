@@ -1,0 +1,26 @@
+block content
+  h1 Add a New Trip
+  form(action='/admin/trips/add' method='POST')
+    label(for='route') Route:
+    select(name='route' required)
+      each route in routes
+        option(value=route.idRoute)= route.location
+    
+    label(for='guide') Guide:
+    select(name='guide' required)
+      each admin in admins
+        option(value=admin.idMember)= admin.name
+    
+    label(for='date') Date:
+    input(type='date' name='date' required)
+    
+    label(for='weather') Weather:
+    select(name='weather' required)
+      option(value='Sunny') Sunny
+      option(value='Cloudy') Cloudy
+      option(value='Rainy') Rainy
+      option(value='Windy') Windy
+      option(value='Snowy') Snowy
+      option(value='Unknown') Unknown
+
+    button(type='submit') Add Trip
