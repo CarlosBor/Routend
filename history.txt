@@ -1,0 +1,43 @@
+creo docker-compose.yml
+copio y pego el de merk2
+no hay que modificar nada
+Creo .env
+añadir:
+DB_ROOT_PASSWORD=mefaltacrearelhashdelsecret
+cambio DB_HOST, de localhost a mysql_routes, que es el nombre del contenedor de BD
+cambio DB_USER, de root a DB_USER
+cambio DB_PORT, de 3307 a 3308 o el que sea que vaya a usar el docker y esté libre
+pongo DB_NAME a routes
+creo APP_HOST='routes'
+cambio PORT por APP_PORT=3000
+comento el SESSION_SECRET
+borro # JWT y # JWT_SECRET=clave_secreta_para_jwt
+
+creo el Dockerfile
+FROM node:20
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
+
+en package.json, añadir --legacy-watch al start para que funcione la deteccion de cambios en Windows
+instalo el bcryptjs con npm install bcryptjs
+y quito el bcrypt antiguo eliminando la entrada en dependencies del package.json y luego hago npm install 
+
+DUDA: cuando genero la bd dockerizada, puedo tener en una sola instancia del docker varios schemas de BD, 
+o hago una instancia por BD y proyecto ypor tanto debo usar un puerto distinto para cada proyecto?
+
+Creo la carpeta models
+dentro creo los archivos que corresponden a las tablas de la base de datos
+creo las relaciones entre tablas
+
+creo la carpeta routes
+dentro creo el archivo router.js que llamara a los routers de cada tabla que va a ser gestionada por la app
+creo los routers de cada tabla
+los routers de cada tabla llaman a su vez a los metodos en los controladores de cada una, segun la ruta
+
+creo la carpeta controllers
+creo los controladores de cada tabla que tendran los metodos para manipular la tabla y obtener datos
+

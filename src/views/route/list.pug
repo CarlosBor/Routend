@@ -1,0 +1,14 @@
+extends ../layout
+
+block content 
+    h1 Routes 
+    if isLoggedIn && isAdmin
+        a(href="/route/create")
+            button Create New Route
+    section(class="route-list")
+        if routes
+            each route in routes 
+                include routeCard
+        else 
+            p There is no route available
+        
