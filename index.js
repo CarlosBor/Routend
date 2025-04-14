@@ -11,6 +11,7 @@ import apiRouterReviews from './routes/api/reviews.js';
 import apiRouterTrips from './routes/api/trips.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import setLocals from './middleware/setLocals.js';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,6 +24,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(setLocals);
 app.use(authRoutes);
 app.use(routeRoutes);
 app.use(tripRoutes);

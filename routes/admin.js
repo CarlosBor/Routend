@@ -1,92 +1,31 @@
 import express from 'express';
-import { Member, Route, Trip } from '../model/index.js';
 import isAdmin from '../middleware/isAdmin.js';
 import authenticateToken from '../middleware/authenticateToken.js';
-
+import { users, addTripsForm, removeTrip, removeUser, promoteUser, addTrip } from '../controllers/adminController.js';
 const router = express.Router();
 
 router.get('/admin/users', authenticateToken, isAdmin, async (req, res) => {
-    try {
-      const users = await Member.findAll();
-      res.render('adminUsers', { users });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error fetching users');
-    }
+    users(req, res);
   });
   
   router.get('/admin/trips/add', authenticateToken, isAdmin, async (req, res) => {
-    try {
-      const routes = await Route.findAll();
-      const admins = await Member.findAll({
-        where: { isAdmin: 1 }
-      });
-  
-      res.render('addTrip', { routes, admins });
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error fetching routes or admins');
-    }
+    addTripsForm(req, res);
   });
 
   router.post('/admin/trips/remove/:tripId', authenticateToken, isAdmin, async (req, res) => {
-    const { tripId } = req.params;
-    try {
-      await Trip.destroy({
-        where: {
-          idTrip: tripId
-        }
-      });
-      res.redirect('/trips');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error removing the trip');
-    }
+    removeTrip(req, res);
   });
 
   router.post('/admin/users/remove/:userId', authenticateToken, isAdmin, async (req, res) => {
-    const { userId } = req.params;
-    try {
-      await Member.destroy({
-        where: {
-          idMember: userId
-        }
-      });
-      res.redirect('/admin/users');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error removing user');
-    }
+    removeUser(req, res);
   });
 
   router.post('/admin/users/promote/:userId', authenticateToken, isAdmin, async (req, res) => {
-    const { userId } = req.params;
-    try {
-      await Member.update(
-        { isAdmin: 1 },
-        { where: { idMember: userId } }
-      );
-      res.redirect('/admin/users');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error promoting user');
-    }
+    promoteUser(req, res);
   });
 
   router.post('/admin/trips/add', authenticateToken, isAdmin, async (req, res) => {
-    const { route, guide, date, weather } = req.body;
-    try {
-      const newTrip = await Trip.create({
-        Time: date,
-        idGuide: guide,
-        idRoute: route,
-        weather: weather
-      });
-      res.redirect('/trips');
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error adding the trip');
-    }
+    addTrip(req, res);
   });
 
   export default router;

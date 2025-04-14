@@ -1,8 +1,10 @@
 doctype html
+
 html
   head
     title Trips by Route
   body
+    include navbar.pug
     h1 Upcoming Routes and Their Trips
     if futureRoutes && futureRoutes.length
       each item in futureRoutes
