@@ -2,13 +2,13 @@ extends ../layout
 
 block content 
     h1 Routes 
-    if isLoggedIn && isAdmin
+    if (isLoggedIn && isAdmin)
         a(href="/route/create")
-            button Create New Route
-    section(class="route-list")
+            button.form__button Create New Route
+    section.route__list
         if routes
             each route in routes 
                 include routeCard
         else 
-            p There is no route available
+            p.error There is no route available
         

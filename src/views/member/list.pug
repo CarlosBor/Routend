@@ -3,11 +3,11 @@ extends ../layout
 block content 
     h1 Members 
     a(href="/member/create")
-        button Create New member
-    section(class="member-list")
+        button.form__button Create New member
+    section.member__list
         if members
             each member in members 
                 include memberCard
         else 
-            p There is no member available
+            p.error There is no member available
         

@@ -23,10 +23,6 @@ const Member_has_Trip = connection.define("Member_has_Trip",{
         allowNull: false,
         primaryKey: true
     },
-    hasVehicle: {
-        type: DataTypes.TINYINT,
-        allowNull: false,
-    },
     freeSeats: {
         type: DataTypes.INTEGER.UNSIGNED,
         allowNull: true,

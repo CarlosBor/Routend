@@ -1,0 +1,32 @@
+article 
+    h2.card__data 
+        | Route: 
+        each route in routes
+            if (trip.idRoute === route.idRoute)
+                span.card__value= route.location
+
+    p.card__data 
+        | Date: 
+        span.card__value= trip.Time
+
+    p.card__data 
+        | Meeting Point: 
+        span.card__value= trip.meetingPoint
+
+    p.card__data 
+        | Guide:
+        each guide in guides 
+            if (guide.idMember === trip.idGuide)
+                span.card__value= guide.name 
+
+    p.card__data 
+        | Weather: 
+        span.card__value= trip.weather
+
+    if (isLoggedIn && isAdmin && !trip.past)
+        a(href=`/trip/${trip.idTrip}/edit`)
+            button.form__button Edit
+        form(action=`/trip/${trip.idTrip}/delete`, method="post", onsubmit="return confirm('Are you sure you want to delete this trip?');") 
+            button.form__button Delete
+
+

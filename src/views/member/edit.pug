@@ -2,18 +2,18 @@ extends ../layout
 block content 
     h1 Edit Member 
     form(action=`/member/${member.idMember}`, method="post") 
-        label.form-label(for="name") Name 
-        input.form-input(type="text", name="name" value=member.name required)
+        label.form__label(for="name") Name 
+        input.form__input(type="text", name="name" value=member.name required)
 
-        label.form-label(for="email") Email
-        input.form-input(type="email", name="email" value=member.email required)
+        label.form__label(for="email") Email
+        input.form__input(type="email", name="email" value=member.email required)
 
-        label.form-label(for="password") Password
-        input.form-input(type="password", name="password" required)
+        label.form__label(for="password") Password
+        input.form__input(type="password", name="password" required)
         
-        label.form-label(for="firstAid") First aid knowloedge
-        select.form-input(name="firstAid" ) 
+        label.form__label(for="firstAid") First aid knowloedge
+        select.form__input(name="firstAid" ) 
             option(value=0 selected=member.firstAid==0) No 
             option(value=1 selected=member.firstAid==1) Yes
 
-        button Submit
+        button.form__button Submit

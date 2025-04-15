@@ -1,14 +1,18 @@
 html
   head
+    meta(charset="UTF-8")
+    link(rel="stylesheet", href="/css/styles.css")
+
     title Routend
     block styles
   body
-    include navbar.pug
+    main
+      include navbar.pug
 
-    if error 
-      p.error= error
-    if message
-      p.message= message
-    block content
-    #footer
-      p (c) Routend Group Ltd. 2025
+      if error 
+        p.error= error
+      if message
+        p.message= message
+      block content
+    footer
+        p (c) Routend Group Ltd. 2025

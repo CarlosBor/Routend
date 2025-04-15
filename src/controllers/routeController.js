@@ -10,7 +10,7 @@ async function getByID(req, res) {
     console.log("en getByID req.body: ", req.body);
     const id = req.params.id;
     const route = await routeModel.findByPk(id);
-    res.render("route/show", { route }); // la ruta de render es a partir de la carpeta views, no la del router
+    res.render("route/show", { route }); 
 }
 
 async function createForm(req, res) {

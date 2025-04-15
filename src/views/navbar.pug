@@ -1,5 +1,5 @@
 header
-    nav
+    nav.header__menu
         ul 
             li 
                 a(href="/") Home 
@@ -18,11 +18,10 @@ header
                 li 
                     a(href="/auth/register") Be a member
                 li
-                    a(href="/auth/login") Sing in
+                    a(href="/auth/login") Sign in
             else
-                li
-                    span #{name} 
-                    if isAdmin 
-                        | Admin
                 li 
                     a(href="/auth/logout") Logout
+                span #{name} 
+                if isAdmin 
+                    |  -Admin

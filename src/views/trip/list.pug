@@ -1,0 +1,82 @@
+extends ../layout
+
+block content 
+    h1 Trips 
+    if isLoggedIn
+        if isAdmin
+            a(href="/trip/create")
+                button.form__button Create New Trip
+        section.trip__list
+            h2 Future trips
+            if futureTrips
+                each trip in futureTrips
+                    include tripCard
+                    each guide in guides
+                        if guide.idMember == trip.idGuide
+                            form(action=signedTrips.includes(trip.idTrip) ? "/trip/unsubscribe" : "/trip/signup", method="post")
+                                input(type="hidden", name="Trip_idTrip", value=trip.idTrip)
+                                //- input(type="hidden", name="Member_idMember", value=guide.idMember)
+
+                                label(for="seats-"+trip.idTrip) Free Seats
+                                input.form__input(
+                                    id=`seats-${trip.idTrip}`
+                                    type="number"
+                                    min="0"
+                                    max="4"
+                                    step="1"
+                                    name="freeSeats"
+                                    value=memberFreeSeats[trip.idTrip] || 0
+                                )
+
+                                if signedTrips.includes(trip.idTrip)
+                                    button.form__button(type="submit") Unsubscribe
+                                else
+                                    button.form__button(type="submit") Sign up
+            else
+                p.error There is no future trips availables
+            h2 Past trips
+            if pastTrips 
+                each trip in pastTrips
+                    include tripCard
+            else
+                p.error There is no past trips 
+
+//- block content 
+//-     h1 Trips 
+//-     if isLoggedIn
+//-         if isAdmin
+//-             a(href="/trip/create")
+//-                 button.form__button Create New Trip
+//-         section.trip__list
+//-             h2 Future trips
+//-             if futureTrips
+//-                 each trip in futureTrips
+//-                     include tripCard
+//-                     each guide in guides
+//-                         if guide.idMember==trip.idGuide 
+//-                             form(action="/trip/signup" method="post")
+//-                                 input(type="hidden" name="Trip_idTrip" value=trip.idTrip)
+//-                                 input(type="hidden" name="Member_idMember" value=guide.idMember)
+
+//-                                 label(for="seats-"+trip.idTrip) Free Seats
+//-                                 input.form__input(
+//-                                     id=`seats-${trip.idTrip}`,
+//-                                     type="number",
+//-                                     min="0",
+//-                                     max="4",
+//-                                     step="1",
+//-                                     name="freeSeats",
+//-                                     value=trip.freeSeats;
+//-                                     )
+//-                                 if 
+//-                                 button.form__button(type="submit") Sign up
+//-             else
+//-                 p.error There is no future trips availables
+//-             h2 Past trips
+//-             if pastTrips 
+//-                 each trip in pastTrips
+//-                     include tripCard
+//-             else
+//-                 p.error There is no past trips 
+                
+        

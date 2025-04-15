@@ -1,19 +1,19 @@
 article 
     h2.card__data 
         | Name: 
-        span.card_value= member.name
+        span.card__value= member.name
     p.card__data 
         | Email: 
-        span.card_value= member.email 
+        span.card__value= member.email 
     p.card__data
         | is Administrator: 
-        span.card_value= (member.isAdmin ? "Yes" : "No")
-    p.card_data 
+        span.card__value= (member.isAdmin ? "Yes" : "No")
+    p.card__data 
         | Have first aid knowledge: 
-        span.card_value= (member.firstAid ? "Yes" : "No")
+        span.card__value= (member.firstAid ? "Yes" : "No")
     a(href=`/member/${member.idMember}/edit`)
-        button Edit
-    form(action=`/member/${member.idMember}/delete`, method="post") 
-        button Delete
+        button.form__button Edit
+    form(action=`/member/${member.idMember}/delete`, method="post", onsubmit="return confirm('Are you sure you want to delete this member?');") 
+        button.form__button Delete
 
     

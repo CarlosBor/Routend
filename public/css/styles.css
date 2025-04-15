@@ -1,0 +1,234 @@
+@import url("https://fonts.googleapis.com/css2?family=Boldonse&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Inter:wght@100..900&display=swap");
+
+:root {
+    --main-color: rgb(182, 226, 186);
+    --header-color: #00ac1da4;
+    --footer-color: var(--header-color);
+
+    --header-height: 5rem;
+    --footer-height: 2rem;
+
+    --titleapp-color: rgb(0 255 81);
+    --page-max-width: 1200px;
+
+    --box-color: lightgray;
+    --box-shadows: 5px 6px 10px 0px rgba(0, 0, 0, 0.75);
+
+    --main-button-color: rgb(225 225 225 / 75%);
+    --img-background: url('img/fondo.jpg');
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    padding-inline-start: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: black;
+    list-style: none;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 99vh;
+    max-width: var(--page-max-width);
+    margin: 0 auto;
+}
+
+
+header,
+footer {
+    background-color: var(--header-color);
+    position: fixed;
+    width: 100%;
+    max-width: var(--page-max-width);
+    text-align: center;
+}
+
+article {
+    margin: 2% 5%;
+}
+header {
+    top: 0;
+}
+
+footer {
+    bottom: 0;
+    height: var(--footer-height);
+    display: flex;
+    align-items: center;
+    font-size: small;
+}
+
+main {
+    /* flex: 1; */
+
+    width: 100%;
+    min-height: calc(100vh - var(--footer-height));
+    padding: var(--header-height) 0% var(--footer-height) 0%;
+    background-color: var(--main-color);
+}
+
+.error {
+    color:red;
+}
+.message {
+    color:darkgreen
+}
+
+section h2 {
+    margin:0 5%;
+}
+nav.header__menu ul{
+    /* padding-top: var(--header-height); */
+    display: flex;
+    max-width: var(--page-max-width);
+    align-items: center;
+    justify-content: center;
+    height: var(--header-height);
+    margin: auto;
+    font-size: 1.2rem;
+    /* flex-direction: column; */
+    background-image: var(--img-background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /*height: 100vh;*/
+    
+}
+
+nav ul li {
+    background-color: var(--main-button-color);
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    width: auto;
+    text-align: center;
+}
+
+
+.card__data {
+    /* border-radius: 5%; */
+    border: none;
+    overflow: hidden;
+    background-color: var(--box-color);
+    -webkit-box-shadow: var(--box-shadows);
+    -moz-box-shadow: var(--box-shadows);
+    box-shadow: var(--box-shadows);
+    min-width: 40%;
+    max-width: 40%;
+    margin: 0%;
+    padding: 6px;
+}
+
+.card__data img {
+    width: 100%;
+}
+
+.card__data h1 {
+    font-weight: lighter;
+    font-size: 0.7rem;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 1rem;
+}
+
+.card__data h2 {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 1rem 2% 0 2%;
+}
+
+.card__data p {
+    font-weight: normal;
+    font-size: 0.9rem;
+    margin: 0 2% 0;
+}
+
+.card__data a {
+    margin: 0 0 0% 70%;
+    padding-bottom: 5%;
+    font-size: 1rem;
+}
+
+form {
+    margin: 0 5%;
+
+}
+form input {
+    height: 2rem;
+    width: 40%;
+    border-radius: 10px;
+    min-width: 200px;
+    margin-right: 3%;
+    padding: 0 5px;
+}
+form label {
+    height: 2rem;
+    margin-right: 1%;
+}
+form select {
+    height: 2rem;
+    border-radius: 10px;
+    padding: 0 15px;
+}
+main h1 {
+    margin-left:5%;
+}
+button {
+    height: 2rem;
+    border-radius: 10px;
+    margin: 15px 10px;
+    padding: 0 34px;
+}
+main a button {
+    margin: 1% 5%;
+}
+
+@media (min-width: 1001px) and (max-width: 2048px) {
+
+    nav.header__menu{
+        display: block;
+    }
+
+    .card__data{
+        min-width: 40%;
+        max-width: 40%;
+        padding: 6px;
+    }
+
+    main {
+        padding-top: 6rem;
+        /* display: flex; */
+        /* flex-direction: row; */
+        /* flex-wrap: wrap;
+        gap: 7%;
+        justify-content: center; */
+    }
+
+}
+
+
+@media (min-width: 0px) and (max-width: 1000px) {
+
+    nav.header__menu ul{
+        display: flex;
+    }
+
+    .card__data {
+        min-width: 40%;
+        max-width: none;
+    }
+
+    main {
+        /* display: block; */
+        padding-top: 6rem;
+    }
+
+}

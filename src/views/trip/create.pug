@@ -1,0 +1,25 @@
+extends ../layout
+block content 
+    h1 New Trip 
+    form(action="/trip", method="post") 
+        label.form__label(for="idRoute") Route
+        select.form__input(name="idRoute" ) 
+            each route in routes
+                option(value=route.idRoute) #{route.location} 
+
+        label.form__label(for="Time") Trip Date Time 
+        input.form__input(type="date", name="Time")
+
+        label.form__label(for="meetingPoint") Meeting Point
+        input.form__input(type="text", name="meetingPoint" )
+
+        label.form__label(for="idGuide") Guide
+        select.form__input(name="idGuide" ) 
+            each guide in guides
+                option(value=guide.idMember) #{guide.name} 
+
+        label.form__label(for="weather") Weather 
+        select.form__input(name="weather") 
+            each weather in weathers 
+                option(value=weather) #{weather}
+        button.form__button Submit

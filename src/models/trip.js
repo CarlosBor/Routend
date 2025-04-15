@@ -14,6 +14,8 @@ import connection from "../config/sequelize.js";
 import Review from "./reviews.js";
 import Photos from "./photos.js";
 
+const   weathers=["Cloudy", "Sunny", "Rainy", "Windy", "Snowy", "Unknown"];
+
 const Trip = connection.define("Trip",{
     idTrip: {
         type: DataTypes.INTEGER.UNSIGNED,
@@ -21,7 +23,7 @@ const Trip = connection.define("Trip",{
         primaryKey: true,
         autoIncrement: true
     },
-    time: {
+    Time: {
         type: DataTypes.DATE,
         allowNull: false,
     },
@@ -38,7 +40,7 @@ const Trip = connection.define("Trip",{
         allowNull: true,
     }, 
     weather: {
-        type: DataTypes.ENUM("Cloudy", "Sunny", "Rainy", "Windy", "Snowy", "Unknown"),
+        type: DataTypes.ENUM(weathers),
         allowNull: false,
     }
 });
@@ -49,3 +51,4 @@ Trip.hasMany(Photos,{foreignKey:"idTrip", onDelete: "CASCADE"}); //Borrar las fo
 Photos.belongsTo(Trip,{foreignKey:"idTrip"});
 
 export default Trip;
+export { weathers };

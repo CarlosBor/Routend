@@ -1,0 +1,7 @@
+extends ../layout
+
+block content 
+    if trip 
+        include tripCard
+    else 
+        p.error There is no trip for that id
