@@ -115,16 +115,3 @@ Rogelio
 Indira
 
 Gaizka​
-llantasyneumaticos.com
-+9
-Medium
-+9
-GitHub
-+9
-corfopym.com
-+8
-GitHub
-+8
-GitHub
-+8
-
