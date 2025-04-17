@@ -1,0 +1,12 @@
+doctype html
+html
+  head
+    title Routes
+  body
+    include navbar.pug
+    h1 Routes
+    ul
+      each route in routes
+        li
+          include routeCard
+    a(href="/routes/new") Add a new route

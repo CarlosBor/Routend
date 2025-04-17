@@ -1,0 +1,28 @@
+block content
+  include navbar.pug
+  h1 Admin Panel - Manage Users
+  table
+    thead
+      tr
+        th Name
+        th Username
+        th Role
+        th Actions
+    tbody
+      each user in users
+        tr
+          td= user.name
+          td= user.username
+          td
+            if user.isAdmin == 1
+              span Admin
+            else
+              span Regular User
+          td
+            // Button to remove the user
+            form(action=`/admin/users/remove/${user.idMember}`, method='POST', style='display:inline')
+              button(type='submit') Remove
+            // Button to promote the user to admin
+            if user.isAdmin == 0
+              form(action=`/admin/users/promote/${user.idMember}`, method='POST', style='display:inline')
+                button(type='submit') Promote to Admin
